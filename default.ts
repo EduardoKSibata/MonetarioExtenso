@@ -61,24 +61,22 @@ export class MonetarioExtenso {
     components = components.filter(x => x !== undefined && x !== "");
     components.reverse();
 
-    let ret: string = "";
-
     let lastItem: string[] = decimalValue > 0 ? components.splice(components.length - 1, 1) : [];
 
-    if (components.length > 0 && lastItem.length > 0) {
-      ret = components.join(", ") + " e " + lastItem[0]
-    }
-    else if(components.length > 1) {
-      ret = components.join(", ");
-    }
-    else {
-      ret = lastItem[0];
-    }
+    let ret: string[] = [];
+
+    if (components.length > 1)
+      ret.push(components.join(", "));
+    else if (components.length > 0)
+      ret.push(components[0]);
+
+    if (lastItem.length > 0)
+      ret.push(lastItem[0]);
 
     if (camelCase)
-      ret = ret[0].toUpperCase() + ret.substring(1);
+      ret[0] = ret[0][0].toUpperCase() + ret[0].substring(1);
 
-    return ret + (isNegative ? " negativo" : "");
+    return ret.join(" e ") + (isNegative ? " negativo" : "");
   }
 
   formaFrase(section: string, tipo: number) {
